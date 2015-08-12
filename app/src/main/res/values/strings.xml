@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Reminders</string>
+    <string name="action_settings">Settings</string>
+    <string name="New_Reminder">New Reminder</string>
+    <string name="Exit_App">Exit</string>
+    <string name="Custom_Dialog_New_Reminder">New Reminder</string>
+    <string name="Custom_Dialog_CheckBox_Text">Important</string>
+    <string name="Custom_Dialog_Button_CancelText">Cancel</string>
+    <string name="Custom_Dialog_Button_CommitText">Commit</string>
+
+</resources>

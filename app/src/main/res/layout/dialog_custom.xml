@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/custom_root_layout"
+        android:background="@color/green">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:text="@string/Custom_Dialog_New_Reminder"
+            android:id="@+id/custom_title"
+            android:layout_gravity="center_vertical"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:id="@+id/custom_edit_reminder"
+            android:layout_gravity="start"
+            android:layout_margin="4dp"
+            android:background="@color/light_grey"
+            android:textColor="@color/black" />
+
+        <CheckBox
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:text="@string/Custom_Dialog_CheckBox_Text"
+            android:id="@+id/custom_check_box"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="4dp"
+            android:background="@color/black"
+            android:paddingLeft="32dp"
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:text="@string/Custom_Dialog_Button_CancelText"
+                android:id="@+id/custom_button_cancel"
+                android:layout_weight="50"
+                android:textColor="@color/white" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:text="@string/Custom_Dialog_Button_CommitText"
+                android:id="@+id/custom_button_commit"
+                android:layout_weight="50"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
