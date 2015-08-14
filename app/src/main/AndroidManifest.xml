@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <receiver android:name=".ReminderAlarmReciever"></receiver>
+        <receiver android:name=".ReminderAlarmReciever"/>
     </application>
 
 </manifest>
