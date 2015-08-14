@@ -7,5 +7,7 @@
     <string name="Custom_Dialog_CheckBox_Text">Important</string>
     <string name="Custom_Dialog_Button_CancelText">Cancel</string>
     <string name="Custom_Dialog_Button_CommitText">Commit</string>
+    <string name="about_us_text">Reminders!</string>
+    <string name="about_us_desc">Version 1.0\nAll Rights Reserved.</string>
 
 </resources>

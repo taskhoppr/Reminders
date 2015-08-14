@@ -1,7 +1,12 @@
 package com.apress.gerber.reminders;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
@@ -24,9 +29,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class Reminders extends ActionBarActivity {
@@ -73,7 +81,7 @@ public class Reminders extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, final int masterListPosition, long id) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Reminders.this);
                 ListView modeListView = new ListView(Reminders.this);
-                String[] modes = new String[] {"Edit Reminder","Delete Reminder"};
+                String[] modes = new String[] {"Edit Reminder","Delete Reminder","Schedule Reminder"};
                 ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(Reminders.this,android.R.layout.simple_list_item_1,android.R.id.text1,modes);
                 modeListView.setAdapter(modeAdapter);
                 builder.setView(modeListView);
@@ -83,15 +91,28 @@ public class Reminders extends ActionBarActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         //edit reminder
-                        if (position == 0) {
                           int nId = getIdFromPosition(masterListPosition);
-                            RemindersDAO reminders = mDbAdapter.fetchReminderById(nId);
+                         final   RemindersDAO reminders = mDbAdapter.fetchReminderById(nId);
+                        if (position == 0) {
                             fireCustomDialog(reminders);
                             //delete reminder
-                        } else {
+                        } else if (position == 1){
                             mDbAdapter.deleteReminderById(getIdFromPosition(masterListPosition));
                             mCursorAdapter.changeCursor(mDbAdapter.fetchAllReminders());
+                        } else {
+                            TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener(){
+                                @Override
+                            public void onTimeSet(TimePicker timePicker, int hour, int minute){
+                                    final Calendar alarmTime = Calendar.getInstance();
+                                    alarmTime.set(Calendar.HOUR,hour);
+                                    alarmTime.set(Calendar.MINUTE,minute);
+                                    scheduleReminder(alarmTime.getTimeInMillis(), reminders.getmContent());
+                                }
+                            };
+                            final Calendar today = Calendar.getInstance();
+                            new TimePickerDialog(Reminders.this,null,today.get(Calendar.HOUR),today.get(Calendar.MINUTE),false).show();
                         }
+
                         dialog.dismiss();
                     }
                 });
@@ -143,6 +164,14 @@ public class Reminders extends ActionBarActivity {
             });
         }
 
+    }
+
+    private void scheduleReminder(long time, String content) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent = new Intent(this,ReminderAlarmReciever.class);
+        alarmIntent.putExtra(ReminderAlarmReciever.REMINDER_TEXT, content);
+        PendingIntent broadcast = PendingIntent.getBroadcast(this,0,alarmIntent,0);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,time,broadcast);
     }
 
     private int getIdFromPosition(int nC) {
@@ -222,11 +251,22 @@ public class Reminders extends ActionBarActivity {
             case R.id.action_exit:
                 finish();
                 return true;
+            case R.id.action_about:
+                fireAboutDialog();
+                return true;
             default:
                 return false;
         }
 
     }
+
+    private void fireAboutDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_about_us);
+        dialog.show();
+    }
+
     private void insertSomeReminders() {
         mDbAdapter.createReminder("Buy Learn Android Studio", true);
         mDbAdapter.createReminder("Send Dad birthday gift", false);
